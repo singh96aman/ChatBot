@@ -137,7 +137,9 @@ while True:
         "No",
     ])
     chatterbot.train([
-
+        "I want to transfer",
+        "Enter Account number"
     ])
+
 
     print chatterbot.get_response(raw_input())
