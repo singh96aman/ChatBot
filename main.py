@@ -91,6 +91,13 @@ import csv
 chatterbot = ChatBot("RuhJay")
 chatterbot.set_trainer(ChatterBotCorpusTrainer)
 chatterbot.set_trainer(ListTrainer)
+
+#!/usr/bin/env python3
+
+# NOTE: this example requires PyAudio because it uses the Microphone class
+
+import speech_recognition as sr
+
 '''
 name = raw_input("Hello ! Welcome to RuhJay Bot ! What is your name ?")
 account_no = raw_input("What is your account number ?")
@@ -141,5 +148,23 @@ while True:
         "Enter Account number"
     ])
 
+    # obtain audio from the microphone
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Say something!")
+        audio = r.listen(source)# obtain audio from the microphone
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Hi How Can I Help You ?")
+        audio = r.listen(source)
 
-    print chatterbot.get_response(raw_input())
+    # recognize speech using Google Speech Recognition
+    try:
+        # for testing purposes, we're just using the default API key
+        # to use another API key, use `r.recognize_google(audio, key="GOOGLE_SPEECH_RECOGNITION_API_KEY")`
+        # instead of `r.recognize_google(audio)`
+        print chatterbot.get_response(r.recognize_google(audio))
+    except sr.UnknownValueError:
+        print("Google Speech Recognition could not understand audio")
+    except sr.RequestError as e:
+        print("Could not request results from Google Speech Recognition service; {0}".format(e))
